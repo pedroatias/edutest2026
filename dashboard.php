@@ -1,12 +1,15 @@
-<?php require_once 'includes/header.php'; ?>
-<?php require_once 'includes/sidebar.php'; ?>
+<?php
+// dashboard.php - ubicado en la raiz del proyecto
+require_once __DIR__ . '/includes/header.php';
+require_once __DIR__ . '/includes/sidebar.php';
+?>
 <div class="container-fluid py-4">
   <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
   <?php
-  $total_estudiantes = $pdo->query("SELECT COUNT(*) FROM estudiantes")->fetchColumn();
-  $total_profesores = $pdo->query("SELECT COUNT(*) FROM profesores")->fetchColumn();
-  $total_cursos = $pdo->query("SELECT COUNT(*) FROM cursos")->fetchColumn();
-  $total_usuarios = $pdo->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
+    $total_estudiantes = $pdo->query("SELECT COUNT(*) FROM estudiantes")->fetchColumn();
+    $total_profesores  = $pdo->query("SELECT COUNT(*) FROM profesores")->fetchColumn();
+    $total_cursos      = $pdo->query("SELECT COUNT(*) FROM cursos")->fetchColumn();
+    $total_usuarios    = $pdo->query("SELECT COUNT(*) FROM usuarios")->fetchColumn();
   ?>
   <div class="row">
     <div class="col-md-3 mb-3">
@@ -52,7 +55,7 @@
       </div>
     </div>
     <div class="col-md-3 mb-3">
-      <div class="card stat-card stat-red">
+      <div class="card stat-card stat-purple">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <div>
@@ -66,41 +69,36 @@
       </div>
     </div>
   </div>
+
   <div class="row mt-4">
     <div class="col-md-6">
       <div class="card">
-        <div class="card-header"><h5><i class="fas fa-user-graduate"></i> Últimos Estudiantes</h5></div>
+        <div class="card-header"><h5><i class="fas fa-clock"></i> Accesos rapidos</h5></div>
         <div class="card-body">
-          <table class="table table-sm">
-            <thead><tr><th>Nombre</th><th>Documento</th><th>Curso</th></tr></thead>
-            <tbody>
-            <?php
-            $stmt = $pdo->query("SELECT e.nombre, e.apellido, e.documento, c.nombre as curso FROM estudiantes e LEFT JOIN cursos c ON e.curso_id = c.id ORDER BY e.id DESC LIMIT 5");
-            while($row = $stmt->fetch()): ?>
-            <tr><td><?= htmlspecialchars($row['nombre'].' '.$row['apellido']) ?></td><td><?= htmlspecialchars($row['documento']) ?></td><td><?= htmlspecialchars($row['curso'] ?? 'N/A') ?></td></tr>
-            <?php endwhile; ?>
-            </tbody>
-          </table>
+          <div class="list-group">
+            <a href="modules/estudiantes/create.php" class="list-group-item list-group-item-action"><i class="fas fa-plus"></i> Nuevo Estudiante</a>
+            <a href="modules/profesores/create.php" class="list-group-item list-group-item-action"><i class="fas fa-plus"></i> Nuevo Profesor</a>
+            <a href="modules/cursos/create.php" class="list-group-item list-group-item-action"><i class="fas fa-plus"></i> Nuevo Curso</a>
+            <a href="modules/notas/index.php" class="list-group-item list-group-item-action"><i class="fas fa-star"></i> Gestionar Notas</a>
+            <a href="modules/asistencia/index.php" class="list-group-item list-group-item-action"><i class="fas fa-calendar-check"></i> Registrar Asistencia</a>
+          </div>
         </div>
       </div>
     </div>
     <div class="col-md-6">
       <div class="card">
-        <div class="card-header"><h5><i class="fas fa-calendar-check"></i> Asistencia Reciente</h5></div>
+        <div class="card-header"><h5><i class="fas fa-info-circle"></i> Informacion del Sistema</h5></div>
         <div class="card-body">
-          <table class="table table-sm">
-            <thead><tr><th>Fecha</th><th>Estudiante</th><th>Estado</th></tr></thead>
-            <tbody>
-            <?php
-            $stmt = $pdo->query("SELECT a.fecha, a.estado, e.nombre, e.apellido FROM asistencia a JOIN estudiantes e ON a.estudiante_id = e.id ORDER BY a.fecha DESC LIMIT 5");
-            while($row = $stmt->fetch()): ?>
-            <tr><td><?= $row['fecha'] ?></td><td><?= htmlspecialchars($row['nombre'].' '.$row['apellido']) ?></td><td><span class="badge bg-<?= $row['estado']=='presente' ? 'success' : ($row['estado']=='ausente' ? 'danger' : 'warning') ?>"><?= ucfirst($row['estado']) ?></span></td></tr>
-            <?php endwhile; ?>
-            </tbody>
+          <table class="table">
+            <tr><th>Sistema:</th><td><?= defined('SITE_NAME') ? SITE_NAME : 'EduTest 2026' ?></td></tr>
+            <tr><th>Ano Lectivo:</th><td><?= defined('ANO_LECTIVO') ? ANO_LECTIVO : date('Y') ?></td></tr>
+            <tr><th>Usuario:</th><td><?= htmlspecialchars($_SESSION['user_nombre']) ?></td></tr>
+            <tr><th>Rol:</th><td><?= htmlspecialchars($_SESSION['user_rol']) ?></td></tr>
+            <tr><th>Fecha:</th><td><?= date('d/m/Y H:i') ?></td></tr>
           </table>
         </div>
       </div>
     </div>
   </div>
 </div>
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
