@@ -1,7 +1,7 @@
 </div><!-- end wrapper -->
-<script src="<?= $base_url ?>assets/js/jquery.min.js"></script>
-<script src="<?= $base_url ?>assets/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $base_url ?>assets/js/sweetalert2.all.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= $base_url ?>assets/js/app.js"></script>
 </body>
 </html>
