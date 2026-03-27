@@ -1,0 +1,20 @@
+# .htaccess - Configuracion Apache para EduTest 2026
+Options -Indexes
+
+# Proteger archivos sensibles
+<FilesMatch "\.(sql|log|env|ini)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Habilitar PHP session y errores para desarrollo
+# Comenta estas lineas en produccion
+# php_flag display_errors on
+# php_flag log_errors on
+
+# Pagina de error personalizada
+ErrorDocument 404 /index.php
+ErrorDocument 500 /index.php
+
+# Charset por defecto
+AddDefaultCharset UTF-8
